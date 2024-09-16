@@ -31,6 +31,6 @@ class AmazonProduitDetail extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function produit():BelongsTo{
-        return $this->BelongsTo(AmazonProduit::class);
+        return $this->belongsTo(AmazonProduit::class);
     }
 }

@@ -1,0 +1,238 @@
+.container{
+    display: flex;
+}
+
+.container .row{
+    display: inline-flex;
+    padding: .5%;
+    text-align: justify;
+    border: 2px solid #0f1111;
+}
+
+.container .row h2{
+    display: inline-block;
+    width: 100%;
+    margin: 3% 0 2% 0;
+    text-align: center;
+}
+
+.item.col-4{
+    display: inline-flex;
+    width: 20%;
+    padding: .2%;
+    margin: .3% 1.6%;
+    transition: transform .1s;
+}
+
+.item.col-4:hover{
+    -ms-transform: scale(1.5); /* IE 9 */
+    -webkit-transform: scale(1.5); /* Safari 3-8 */
+    transform: scale(1.05);
+    background-color: transparent;
+}
+
+.item.col-4 .btn.btn-light{
+    display: inline-block;
+    width: 100%;
+    border:  1px solid slategrey;
+}
+
+.item.col-4 .btn.btn-light .image-container,
+.item.col-4 .btn.btn-light .details-container{
+    display: inline-block;
+    width: 100%;
+}
+
+.item.col-4 .btn.btn-light .image-container{
+    background-color:#f7f7f7 ;
+    padding: 1.5% .5%;
+}
+
+.item.col-4 .btn.btn-light .details-container{    
+    background-color: #fafafa;
+    text-align: justify;
+    line-height: normal;
+    padding: 1.5% .5%;
+}
+
+.item.col-4 .btn.btn-light .image-container img{
+    background-color: none;
+    padding: 1% .5%;
+}
+
+.item.col-4 .btn.btn-light .details-container .price-details{
+    padding: .2%;
+    margin-top: 2%;
+    font-weight: bold;
+    font-size: 25px;
+    font-style: italic;
+    color: #0f1111;
+    text-align: center;
+}
+
+.item.col-4 .btn.btn-light .details-container .title-details{
+    padding: .2%;
+    font: 15px "Amazon Ember", Arial,sans-serif;
+}
+
+.bloc-image.col,
+.bloc-details.col,
+.bloc-cart.col{
+    text-align: center;
+}
+
+.bloc-image.col .product-image{
+    display: inline-block;
+    width: 99%;
+    margin: 7% .5%;
+}
+
+.bloc-image.col .product-image img{
+    display: inline-flex;
+    width: 99%;
+    height: 50%;
+    padding: .5%;
+}
+
+.bloc-details.col p.product-title{
+    display: inline-flex;
+    width: 100%;
+    padding-bottom: 5%;
+    font: 1.7em "Amazon Ember", Arial,sans-serif;
+    text-align: justify;
+}
+
+.bloc-details.col p.product-price{
+    display: inline-block;
+    width: 100%;
+    padding-bottom: 5%;
+    border-bottom: 1px solid grey;
+    font: 2em "Amazon Ember", Arial,sans-serif;
+    font-weight: 600;
+    font-style: italic;
+    text-align: center;
+}
+
+.bloc-details.col p.product-description,
+.bloc-details.col p.product-disponibility{
+    display: inline-flex;
+    width: 100%;
+    padding-bottom: 5%;
+    
+    font: 1em "Amazon Ember", Arial,sans-serif;
+    text-align: justify;
+}
+
+.bloc-details.col p.product-disponibility{
+    font-weight: 700;
+}
+
+.bloc-cart.col form{
+    display: inline-block;
+    width: 60%;
+    height: fit-content;
+    padding: 5%;
+    border: 1px solid gray;
+}
+
+.bloc-cart.col .basket-details{
+    display: inline-block;
+    width: 60%;
+    height: fit-content;
+    padding: 5%;
+    border: 1px solid gray;
+}
+
+.bloc-cart.col .basket-details .cart-mini.col.sm{
+    display: inline-block;
+    width: 98%;
+    height: fit-content;
+    padding: 1%;
+    border: 1px solid gray;
+}
+
+.bloc-cart.col .basket-details .cart-mini.col.sm span{
+    display: inline-block;
+    width: 100%;
+    padding: 2% 0;
+    margin: 1% 0 3% 0;
+    font-size: 1em;
+}
+
+.bloc-cart.col .basket-details .cart-mini.col.sm .product-item{
+    display: inline-block;
+    width: 100%;
+    padding: 2% 0;
+    margin: 1% 0 3% 0;
+    font-size: 1em;
+    border-bottom: 1px solid gray;
+}
+
+.bloc-cart.col .basket-details .cart-mini.col.sm .product-item img{
+    display: inline-block;
+    width: 40%;
+    height: min-content;
+    padding: 1%;
+}
+
+.bloc-cart.col .basket-details .cart-mini.col.sm .product-item .product-item-price{
+    display: inline-block;
+    width: 70%;
+    font-size: 12px;
+    padding: 1%;
+}
+
+.bloc-cart.col .basket-details .cart-mini.col.sm .product-item .product-item-delete{
+    display: inline-block;
+    width: fit-content;
+}
+
+.bloc-cart.col .basket-details .cart-mini.col.sm .product-item .product-item-delete .btn.btn-danger.btn-sm{
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+}
+
+.bloc-cart-details{
+    display: inline-block;
+    width: 60%;
+    height: 30%;
+    padding: 5%;
+}
+
+.bloc-cart.col form{
+    border: 1px solid grey;
+    border-radius: 3px 3px 0 0;
+}
+
+.bloc-cart-details{
+    border: 1px solid grey;
+    border-top: none;
+    border-radius: 0 0 3px 3px;
+}
+
+.bloc-cart-details h5{
+    font-weight: normal;
+}
+
+button, input#btnSubmit {
+    display: inline-block;
+    width: 99%;
+    height: 40px;
+    margin-top: 12px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    background: #f0c14b;
+    border: 1px solid #e9ecef;
+    cursor: pointer;    
+    text-align: center;
+    text-decoration: none !important;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+button, input#btnSubmit:hover {
+    background-color: #a88734 #9c7e31 #846a29;
+    border: 1px solid #e9ecef;
+}

@@ -1,0 +1,162 @@
+.image{
+    margin-top:-75px;
+    margin-bottom: -75px;
+    /*border: 1px solid #0c0c0c;*/
+    border: none;
+  }
+  .hide-bg {
+      mix-blend-mode: multiply;
+      filter: contrast(1);
+  }
+  .signup, .login {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 4px;
+      padding: 14px 18px;
+  }
+  
+  .signup header, .login header {
+      font-size: 2em;
+      font-weight: 500;
+  }
+
+  .login header{
+    margin-bottom: 5%;
+  }
+  
+  .signup img, .login img {
+    display: flex;    
+  }
+  
+  .form-border {
+      display: block;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      padding: 14px;
+      width: 50vh;
+      padding-top: -55%;
+  }
+  
+  form, .login-form {
+      display: flex;
+      flex-direction: column;
+  }
+
+  form label {
+    display: inline-block;
+    width: 60%;
+    margin-left: 1%;
+    margin-bottom: .5%;
+    padding-top: 12px;
+    color: #000;
+    font-weight: bolder;
+}
+
+  .special-label {
+    display: block;
+  }
+
+  .special-label .rememberMe{
+    height: 13px;
+    width: 13px;
+    vertical-align: top;
+    position: relative;
+    bottom: -3px;
+  }
+
+  .special-label .a-icon, .a-link-emphasis:after {
+    background-image: url(https://m.media-amazon.com/images/S/sash/mPGmT0r6IeTyIee.png);
+    -webkit-background-size: 400px 750px;
+    background-size: 400px 750px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.special-label .a-checkbox-label, .a-radio-label {
+  position: relative;
+  padding-left: 5px;
+  text-indent: 0;
+  display: inline-block;
+}
+  
+  form input, .login-form input {
+    display: inline-block;
+    width: 99%;
+    height: 40px;
+    border: 1px solid #a6a6a6;
+    border-top-color: #949494;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5),
+        0 1px 0 rgba(0, 0, 0, 0.07) inset;
+    outline: 0;
+    background-color: #fff;
+    height: 31px;
+    padding: 3px 7px;
+    line-height: normal;
+  }
+  
+  button, input#btnSubmit,
+  .btn.btn-primary.btn-sm.col-5 {
+    display: inline-block;
+    width: 99%;
+    margin-top: 12px;
+    padding: 10px;
+    background: #f0c14b;
+    border-color: #a88734 #9c7e31 #846a29;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none !important;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .btn.btn-primary.btn-sm.col-5:hover {
+    background-color: #a88734 #9c7e31 #846a29;
+    border: 1px solid #e9ecef;
+}
+  
+  .legal-info{
+    font-size:12px;
+    line-height:1.5;
+    margin-top: 18px;
+    text-align: justify;
+  }
+  
+  .register{
+    font-size:12px;
+    line-height:1.5;
+  }
+  
+   a{
+    text-decoration: none;
+    color: #0066c0;
+  }
+  
+  .buyforwork{
+    font-size:12px;
+    line-height:1.5;
+  }
+  .divider{
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #949494;
+    /*background: linear-gradient(to right, #fff, rgba(255,255,255,0), #fff);*/
+    content: "";
+  }
+  
+  .text-error{
+      color: #e11d48;
+      font-size: 15px;
+  }
+
+  /* MES STYLES */
+  

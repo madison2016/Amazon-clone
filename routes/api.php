@@ -1,20 +1,26 @@
 <?php
 
-use App\Http\Controllers\BecomeSellerController;
-use App\Http\Controllers\CategorieProduitController;
-use App\Http\Controllers\DetailProduitController;
-use App\Http\Controllers\PlanVenteController;
-use App\Http\Controllers\ProduitController;
-use App\Http\Controllers\StockController;
-use App\Http\Controllers\StoreController;
+//use App\Http\Controllers\BecomeSellerController;
+
+use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\CartShopController;
+use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CreditCardController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TvaController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserProfileController;
+use App\Models\Shop;
+//use App\Http\Controllers\UserProfileController;
+//use App\Models\UserProfile;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+//use Illuminate\Foundation\Auth\EmailVerificationRequest;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,95 +31,206 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+//*************************ROUTES FOR EVERYONE *********************** */
+
+
 // test
 Route::get('/test', function(){
     return ('test');
+});
+
+// inscription
+Route::post('/register', [UserController::class, 'register']);
+
+// login
+Route::post('/login', [UserController::class, 'login']);
+
+// afficher la liste des categories produit pour la page d'accueil
+Route::get('/get-category', [CategorieController::class, 'getCategory']);
+
+// afficher le catalogue produits sur la Home Page
+Route::get('/show-products', [ProductController::class, 'show']);
+
+// afficher le catalogue produits en fonction de criteres de recherche sur la Home Page 
+Route::post('/find-products', [ProductController::class, 'foundProduct']);
+
+// afficher le produit selectionne
+Route::get('/show-product/{id}', [ProductController::class, 'getSingle']);
 
 
-// s'inscrire
-Route::post('register', [UserController::class, 'register']);
 
-// se connecter
-Route::post('login', [UserController::class, 'login'])->name('connexion');
 
-//***********************TRAITEMENT DE L'EMAIL VERICIATION ****************** */
-// notification de l'envoi de l'email de verification
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
+//********************** ROUTES FOR ONLY AUTHENTIFY USERS ******************************************************* */
 
-// verification proprement dite de l'email
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
- 
-    return redirect('/home');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
-// renvoie de l'email de verification
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
- 
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 // Protection de certaines routes
 Route::get('/profile', function () {
     // Only verified users may access this route...
 })->middleware(['auth', 'verified']);
 
-//***************************************************************************** */
 
-// groupe de route dont l'acces n'est autorise qu'aux utilisateurs identifies
-Route::group(['middleware' => ['auth::sanctum']], function(){
+//*************************ROUTES EXCLUSIVEMENT RESERVEES AUX UTILISATEURS AUTHENTIFIES *********************** */
 
-    // devenir vendeur
-    Route::post('becomeSeller', [UserController::class, 'becomeSeller'])->name('devenirVendeur');
-
-    // mettre a jour les informations du profil
-    Route::post('updateProfile', [UserController::class, 'UpdateProfile'])->name('majProfil');
-
-    // se deconnecter
-    Route::get('logout', [UserController::class, 'logout'])->name('deconnexion');
-
-    // afficher les details du profil utilisateur
-    Route::get('getProfile',[UserController::class, 'getDetailProfile'])->name('afficheDetailsProfil');
-});
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-// inscription
-Route::post('register', [UserController::class, 'register']);
-
-// connexion
-Route::post('login', [UserController::class, 'login']);
-
-// Groupe de routes protegees (uniquement pour les utilisateurs authentifies)
 Route::group(['middleware' => ['auth:sanctum']], function() {
+    
+//*********************** TVA ********************************* */
 
-    // deconnexion de l'utilisateur  
-    Route::post('logout',   [UserController::class, 'logout']);
+    // creer une tva
+    Route::post('/add-tva', [TvaController::class, 'store']);
 
-    // enregistrer informations de profil
-    Route::post('/create_profil', [UserProfileController::class, 'create']);
+    // afficher la liste des tva
+    Route::get('/view-tva', [TvaController::class, 'index']);
 
-    // mise a jour du profil
-    Route::patch('/update_profil/{id}', [UserProfileController::class, 'update']);
+    // afficher la liste des tva
+    Route::get('/edit-tva/{id}', [TvaController::class, 'edit']);
 
-    // detail du profil
-    Route::get('/edit_profil/{id}', [UserProfileController::class, 'edit']);
+    // recuperer la tva pour facturation commande
+    Route::get('/get-tva', [TvaController::class, 'getTva']);
 
-    // delete profil
-    Route::delete('/delete_profil/{id}', [UserProfileController::class, 'delete']);
+    // supprimer une tva
+    Route::patch('/update-tva/{id}', [TvaController::class, 'update']);
+
+    // supprimer une tva
+    Route::delete('/delete-tva/{id}', [TvaController::class, 'destroy']);
+
+
+
+    //*********************** CATEGORY ********************************* */
+
+    // creer une categorie produit
+    Route::post('/add-category', [CategorieController::class, 'store']);
+    
+    // afficher la liste des categories produit
+    Route::get('/view-category', [CategorieController::class, 'index']);    
+
+    // afficher la liste des categories produit
+    Route::get('/show-category', [CategorieController::class, 'show']);
+           
+    // afficher la liste des categories produit
+    Route::get('/edit-category/{id}', [CategorieController::class, 'edit']);
+
+    // mise a jour d'une categorie produit
+    Route::post('/update-category/{id}', [CategorieController::class, 'update']);
+
+    // Suppression d'une categorie
+    Route::delete('/delete-category/{id}', [CategorieController::class, 'destroy']);
+
+
+    //*********************** SHOP ********************************* */
+
+    // creer une boutique
+    Route::post('/add-shop', [ShopController::class, 'store']);
+
+    // afficher la liste des boutiques
+    Route::get('/view-shop', [ShopController::class, 'index']);
+
+    // afficher la liste des boutiques
+    Route::get('/show-shop', [ShopController::class, 'show']);
+
+    // editer une boutique specifique
+    Route::get('/edit-shop/{id}', [ShopController::class, 'edit']);
+
+    // suppression d'une boutique
+    Route::delete('/delete-shop/{id}', [ShopController::class, 'destroy']);
+
+    // mise a jour d'une boutique
+    Route::post('/update-shop/{id}', [ShopController::class, 'update']);
+
+    //*********************** PRODUCTS ********************************* */
+
+    // creer un produit
+    Route::post('/add-product', [ProductController::class, 'store']);
+
+    // creer un produit
+    Route::get('/view-product', [ProductController::class, 'index']);
+
+    // creer un produit
+    Route::get('/edit-product/{id}', [ProductController::class, 'edit']);
+
+    // modifier un produit
+    Route::post('/update-product/{id}', [ProductController::class, 'update']);
+
+    // supprimer un produit
+    Route::delete('/delete-product/{id}', [ProductController::class, 'destroy']);
+
+
+//************************** CART-SHOP ************************************** */
+
+
+    // ajout d'un produit dans le panier
+    Route::post('/add-cartshop', [CartShopController::class, 'store']);
+
+    // ajout d'un produit dans le panier
+    Route::get('/view-cartshop', [CartShopController::class, 'view']);
+
+    // update cartshop quantity
+    Route::patch('/cartshop-updatequantity/{cart_id}/{art_id}/{scope}', [CartShopController::class, 'updatequantity']);
+
+    // supprimer une ligne du panier
+    Route::delete('/delete-cart-item/{cart_id}', [CartShopController::class, 'deleteCartitem']);
+
+
+    //************************** ORDERS ************************************** */
+
+    // enregistre une commande
+    Route::post('/place-order', [CheckoutController::class, 'placeOrder']);
+
+    //************************** USERS ************************************** */
+
+    // deconnexion de l'utilisateur
+    Route::post('/logout', [UserController::class, 'logout']);
+
+    // mise a jour du nom d'utilisateur
+    Route::post('/update-username/{id}', [UserController::class, 'updateUsername']);
+
+    // mise a jour du nom d'utilisateur
+    Route::post('/update-email/{id}', [UserController::class, 'updateEmail']);
+
+    // mise a jour du nom d'utilisateur
+    Route::post('/update-password/{id}', [UserController::class, 'updatePassword']);
+
+    // recuperer les infos du compte utilisateur
+    Route::get('/account-user', [UserController::class, 'getUserAccount']);
+
+    // enregistrer un profil utilisateur
+    Route::post('/add-profile', [ProfileController::class, 'store']);
+
+    // afficher un profil utilisateur
+    Route::get('/get-profile', [ProfileController::class, 'getProfile']);
+
+    // mise a jour du profil utilisateur
+    Route::post('/update-profile/{id}', [ProfileController::class, 'update']);
+
+    // ajout compte bancaire utilisateur
+    Route::post('/add-user-bank-account', [BankAccountController::class, 'store']);
+
+    // ajout carte de credit utilisateur
+    Route::post('/add-user-credit-card', [CreditCardController::class, 'store']);
+
+    // recuperer les cartes de credit utilisateur
+    Route::get('/view-user-credit-card', [CreditCardController::class, 'index']);
+
+    // recuperer les cartes de credit utilisateur
+    Route::get('/view-user-bank-account', [BankAccountController::class, 'index']);
+
+    
+
+    
+    
+
+    //*************************EMAIL MANAGE ******************************************* */
 
     // verification email
     Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
         $request->fulfill();
-        
+
         // on recupere les infos de l'utilisateur connecte
         $user = Auth::user();
-    
+
         return response()->json([
             'message' => 'Votre email vient d\'etre verifie.',
             'datas' => $user
@@ -123,86 +240,11 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     // resend email for verification
     Route::post('/email/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
-    
+
         return response()->json([
             'message' => 'Un nouveau email de verification vous a ete envoye'
         ]);
     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
-    // devenir un vendeur 
-    Route::post('/become_seller', [BecomeSellerController::class, 'createStore']);
-
-    // creer un store pour un vendeur
-    Route::post('/create_store', [StoreController::class, 'create']);
-
-    // mise a jour du store (boutique)
-    Route::patch('/update_store/{id}', [StoreController::class, 'update']);
-
-    // fermeture du store (boutique) par son proprietaire
-    Route::patch('/close_store/{id}', [StoreController::class, 'close']);
-
-    // suppression du store (boutique) par l'administrateur
-    Route::delete('/delete_store/{id}', [StoreController::class, 'delete']);
-
-    // editer la liste des stores pour vendeur
-    Route::get('/edit_store/{id}', [StoreController::class, 'edit']);
-
-    // creer un plan de vente
-    Route::post('/create_plan_vente', [PlanVenteController::class, 'store']);
-
-    // mise a jour d'un plan de vente
-    Route::patch('/update_plan_vente/{id}', [PlanVenteController::class, 'update']);
-
-    // suppression d'un plan de vente
-    Route::delete('/delete_plan_vente/{id}', [PlanVenteController::class, 'delete']);
-
-    // editer la liste des plans de vente
-    Route::get('/edit_plan_vente', [PlanVenteController::class, 'edit']);
-
-    // afficher la liste des plans de vente
-    Route::get('/show_plan_vente/{id}', [PlanVenteController::class, 'show']);
-
-    // creer une categorie de produits
-    Route::post('/create_categorie_produit', [CategorieProduitController::class, 'store']);
-
-    // mise a jour d'une categorie
-    Route::patch('/update_categorie_produit/{id}', [CategorieProduitController::class, 'update']);
-
-    // afficher la liste des categories de produit
-    Route::get('/show_categorie_produit/{id}', [CategorieProduitController::class, 'show']);
-
-    // suppression d'une categorie de produit
-    Route::delete('/delete_categorie_produit/{id}', [CategorieProduitController::class, 'delete']);
-
-    // creer un produit au profit d'un store
-    Route::post('/create_product', [ProduitController::class, 'store']);
-
-    // mise a jour d'un produit
-    Route::patch('/update_product/{id}', [ProduitController::class, 'update']);
-
-    // sotie d'un produit du catalogue
-    Route::patch('/remove_product/{id}', [ProduitController::class, 'remove']);
-
-    // suppression du produit du catalogue par l'administrateur
-    Route::delete('/delete_product/{id}', [ProduitController::class, 'delete']);
-
-    // editer un produit
-    Route::get('/edit_product/{id}', [ProduitController::class, 'edit']);
-
-    // constituer un stock au profit d'un produit
-    Route::post('/create_stock', [StockController::class, 'store']);
-
-    // mise a jour d'un stock
-    Route::patch('/update_stock/{id}', [StockController::class, 'update']);
-
-    // ajouter une description a un produit
-    Route::post('/create_detail_product', [DetailProduitController::class, 'store']);
-
-    // mise a jour d'une description d'un produit
-    Route::patch('/update_detail_product/{id}', [DetailProduitController::class, 'update']);
-
-    // suppression de detail d'un produit
-    Route::delete('/delete_product/{id}', [DetailProduitController::class, 'delete']);
 
     // obtenir les infos de l'utilisateur connecte
     Route::get('/user', function (Request $request) {

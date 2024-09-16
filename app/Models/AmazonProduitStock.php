@@ -25,7 +25,7 @@ class AmazonProduitStock extends Model
      * Summary of user
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function AmazonProduit():BelongsTo{
+    public function produit():BelongsTo{
         return $this->BelongsTo(AmazonProduit::class);
     }
 }
